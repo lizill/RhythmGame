@@ -11,6 +11,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/lizil/Desktop/RhythmGame/jlayer1.0.1/jl1.0.1.jar"/>
+	<classpathentry kind="lib" path="library/jl1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

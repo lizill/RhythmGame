@@ -24,21 +24,34 @@ public class Note extends Thread {
 		proceeded = false;
 	}
 	
-	public Note(String noteType) {
-		if(noteType.equals("S")) {
-			x = 228;
-		} else if(noteType.equals("D")) {
-			x = 332;
-		} else if(noteType.equals("F")) {
-			x = 436;
-		} else if(noteType.equals("Space")) {
-			x = 540;
-		} else if(noteType.equals("J")) {
-			x = 744;
-		} else if(noteType.equals("K")) {
-			x = 848;
-		} else if(noteType.equals("L")) {
-			x = 952;
+	public Note(String noteType, String difficulty) {
+		if (difficulty.equals("Hard")) {
+			if(noteType.equals("S")) {
+				x = 228;
+			} else if(noteType.equals("D")) {
+				x = 332;
+			} else if(noteType.equals("F")) {
+				x = 436;
+			} else if(noteType.equals("Space")) {
+				x = 540;
+			} else if(noteType.equals("J")) {
+				x = 744;
+			} else if(noteType.equals("K")) {
+				x = 848;
+			} else if(noteType.equals("L")) {
+				x = 952;
+			}
+		}
+		else if (difficulty.equals("Easy")) {
+			if(noteType.equals("D")) {
+				x = 436;
+			} else if(noteType.equals("F")) {
+				x = 540;
+			} else if(noteType.equals("J")) {
+				x = 644;
+			} else if(noteType.equals("K")) {
+				x = 748;
+			}
 		}
 		this.noteType = noteType;
 	}

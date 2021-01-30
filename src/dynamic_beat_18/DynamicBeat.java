@@ -153,15 +153,15 @@ public class DynamicBeat extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if(connectDatabase.isAdmin(idField.getText(), pwField.getText())) {
+//				if(connectDatabase.isAdmin(idField.getText(), pwField.getText())) {
 					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
 					buttonPressedMusic.start();
 					enterMain();
-				} else {
-					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
-					buttonPressedMusic.start();
-					System.out.println("로그인 실패");
-				}
+//				} else {
+//					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
+//					buttonPressedMusic.start();
+//					System.out.println("로그인 실패");
+//				}
 			}
 		});
 		add(startButton);
@@ -432,6 +432,7 @@ public class DynamicBeat extends JFrame {
 		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
 		game.start();
 		setFocusable(true);
+		requestFocus();
 	}
 	
 	public void backMain() {

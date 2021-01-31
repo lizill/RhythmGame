@@ -36,15 +36,16 @@ public class Game extends Thread {
 	private Image keyPadJImage = new ImageIcon(Main.class.getResource("../images/keyPadBasic.png")).getImage();
 	private Image keyPadKImage = new ImageIcon(Main.class.getResource("../images/keyPadBasic.png")).getImage();
 	private Image keyPadLImage = new ImageIcon(Main.class.getResource("../images/keyPadBasic.png")).getImage();
+	private Image resultBackground = new ImageIcon(Main.class.getResource("../images/resultBackground.png")).getImage();
 	
 	private String titleName;
 	private String difficulty;
 	private String musicTitle;
 	private GameMusic gameMusic;
-	private int score = 0;
-	private int combo = 0;
+	private int score, combo, miss, good, great, perfect;
 	
 	ArrayList<Note> noteList = new ArrayList<Note>();
+	ArrayList<Integer> comboList = new ArrayList<Integer>();
 	
 	public Game(String titleName, String difficulty, String musicTitle) {
 		this.titleName = titleName;
@@ -54,121 +55,131 @@ public class Game extends Thread {
 	}
 	
 	public void screenDraw(Graphics2D g) {
-		if(difficulty.equals("Easy")) {
-			g.drawImage(noteRouteDImage, 436, 30, null);
-			g.drawImage(noteRouteFImage, 540, 30, null);
-			g.drawImage(noteRouteJImage, 644, 30, null);
-			g.drawImage(noteRouteKImage, 748, 30, null);
-			g.drawImage(noteRouteLineImage, 432, 30, null);
-			g.drawImage(noteRouteLineImage, 536, 30, null);
-			g.drawImage(noteRouteLineImage, 640, 30, null);
-			g.drawImage(noteRouteLineImage, 744, 30, null);
-			g.drawImage(noteRouteLineImage, 848, 30, null);
-			g.drawImage(gameInfoImage, 0, 660, null);
-			g.drawImage(judgementLineImage, 0, 580, null);
-			for(int i=0; i<noteList.size(); i++) {
-				Note note = noteList.get(i);
-				if(note.getY() > 620) {
-					judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
-					combo = 0;
+		if(!DynamicBeat.isGameResult) {
+			if(difficulty.equals("Easy")) {
+				g.drawImage(noteRouteDImage, 436, 30, null);
+				g.drawImage(noteRouteFImage, 540, 30, null);
+				g.drawImage(noteRouteJImage, 644, 30, null);
+				g.drawImage(noteRouteKImage, 748, 30, null);
+				g.drawImage(noteRouteLineImage, 432, 30, null);
+				g.drawImage(noteRouteLineImage, 536, 30, null);
+				g.drawImage(noteRouteLineImage, 640, 30, null);
+				g.drawImage(noteRouteLineImage, 744, 30, null);
+				g.drawImage(noteRouteLineImage, 848, 30, null);
+				g.drawImage(gameInfoImage, 0, 660, null);
+				g.drawImage(judgementLineImage, 0, 580, null);
+				for(int i=0; i<noteList.size(); i++) {
+					Note note = noteList.get(i);
+					if(note.getY() > 620) {
+						System.out.println("Miss");
+						judgeEvent("Miss");
+					}
+					if(!note.isProceeded()) {
+						noteList.remove(i);
+						i--;
+					} else {
+						note.screenDraw(g);
+					}
 				}
-				if(!note.isProceeded()) {
-					noteList.remove(i);
-					i--;
-				} else {
-					note.screenDraw(g);
-				}
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g.setColor(Color.white);
+				g.setFont(new Font("Airal", Font.BOLD, 30));
+				g.drawString(titleName, 20, 702);
+				g.drawString(difficulty, 1192, 702);
+				g.setFont(new Font("Airal", Font.PLAIN, 26));
+				g.setColor(Color.DARK_GRAY);
+				g.drawString("D", 478, 609);
+				g.drawString("F", 582, 609);
+				g.drawString("J", 686, 609);
+				g.drawString("K", 790, 609);
+				g.setColor(Color.LIGHT_GRAY);
+				g.setFont(new Font("Elephant", Font.BOLD, 30));
+				g.drawString(String.format("%06d", score), 565, 702);
+				g.setColor(Color.white);
+				g.setFont(new Font("SANS_SERIF", Font.BOLD, 62));
+				g.drawString(String.valueOf(combo), 960, 340);
+				g.drawImage(blueFlareImage, 500, 405, null);
+				g.drawImage(judgeImage, 460, 420, null);
+				g.drawImage(keyPadDImage, 436, 580, null);
+				g.drawImage(keyPadFImage, 540, 580, null);
+				g.drawImage(keyPadJImage, 644, 580, null);
+				g.drawImage(keyPadKImage, 748, 580, null);
 			}
-			g.setColor(Color.white);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//			g.setColor(Color.white);
-			g.setFont(new Font("Airal", Font.BOLD, 30));
-			g.drawString(titleName, 20, 702);
-			g.drawString(difficulty, 1192, 702);
-			g.setFont(new Font("Airal", Font.PLAIN, 26));
-			g.setColor(Color.DARK_GRAY);
-			g.drawString("D", 478, 609);
-			g.drawString("F", 582, 609);
-			g.drawString("J", 686, 609);
-			g.drawString("K", 790, 609);
-			g.setColor(Color.LIGHT_GRAY);
-			g.setFont(new Font("Elephant", Font.BOLD, 30));
-			g.drawString(String.format("%06d", score), 565, 702);
-			g.setColor(Color.white);
-			g.setFont(new Font("SANS_SERIF", Font.BOLD, 62));
-			g.drawString(String.valueOf(combo), 960, 340);
-			g.drawImage(blueFlareImage, 500, 405, null);
-			g.drawImage(judgeImage, 460, 420, null);
-			g.drawImage(keyPadDImage, 436, 580, null);
-			g.drawImage(keyPadFImage, 540, 580, null);
-			g.drawImage(keyPadJImage, 644, 580, null);
-			g.drawImage(keyPadKImage, 748, 580, null);
-		}
-		else if(difficulty.equals("Hard")) {
-			g.drawImage(noteRouteSImage, 228, 30, null);
-			g.drawImage(noteRouteDImage, 332, 30, null);
-			g.drawImage(noteRouteFImage, 436, 30, null);
-			g.drawImage(noteRouteSpace1Image, 540, 30, null);
-			g.drawImage(noteRouteSpace2Image, 640, 30, null);
-			g.drawImage(noteRouteJImage, 744, 30, null);
-			g.drawImage(noteRouteKImage, 848, 30, null);
-			g.drawImage(noteRouteLImage, 952, 30, null);
-			g.drawImage(noteRouteLineImage, 224, 30, null);
-			g.drawImage(noteRouteLineImage, 328, 30, null);
-			g.drawImage(noteRouteLineImage, 432, 30, null);
-			g.drawImage(noteRouteLineImage, 536, 30, null);
-			g.drawImage(noteRouteLineImage, 740, 30, null);
-			g.drawImage(noteRouteLineImage, 844, 30, null);
-			g.drawImage(noteRouteLineImage, 948, 30, null);
-			g.drawImage(noteRouteLineImage, 1052, 30, null);
-			g.drawImage(gameInfoImage, 0, 660, null);
-			g.drawImage(judgementLineImage, 0, 580, null);
-			for(int i=0; i<noteList.size(); i++) {
-				Note note = noteList.get(i);
-				if(note.getY() > 620) {
-					judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
+			else if(difficulty.equals("Hard")) {
+				g.drawImage(noteRouteSImage, 228, 30, null);
+				g.drawImage(noteRouteDImage, 332, 30, null);
+				g.drawImage(noteRouteFImage, 436, 30, null);
+				g.drawImage(noteRouteSpace1Image, 540, 30, null);
+				g.drawImage(noteRouteSpace2Image, 640, 30, null);
+				g.drawImage(noteRouteJImage, 744, 30, null);
+				g.drawImage(noteRouteKImage, 848, 30, null);
+				g.drawImage(noteRouteLImage, 952, 30, null);
+				g.drawImage(noteRouteLineImage, 224, 30, null);
+				g.drawImage(noteRouteLineImage, 328, 30, null);
+				g.drawImage(noteRouteLineImage, 432, 30, null);
+				g.drawImage(noteRouteLineImage, 536, 30, null);
+				g.drawImage(noteRouteLineImage, 740, 30, null);
+				g.drawImage(noteRouteLineImage, 844, 30, null);
+				g.drawImage(noteRouteLineImage, 948, 30, null);
+				g.drawImage(noteRouteLineImage, 1052, 30, null);
+				g.drawImage(gameInfoImage, 0, 660, null);
+				g.drawImage(judgementLineImage, 0, 580, null);
+				for(int i=0; i<noteList.size(); i++) {
+					Note note = noteList.get(i);
+					if(note.getY() > 620) {
+						System.out.println("Miss");
+						judgeEvent("Miss");
+					}
+					if(!note.isProceeded()) {
+						noteList.remove(i);
+						i--;
+					} else {
+						note.screenDraw(g);
+					}
 				}
-				if(!note.isProceeded()) {
-					noteList.remove(i);
-					i--;
-				} else {
-					note.screenDraw(g);
-				}
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g.setColor(Color.white);
+				g.setFont(new Font("Airal", Font.BOLD, 30));
+				g.drawString(titleName, 20, 702);
+				g.drawString(difficulty, 1192, 702);
+				g.setFont(new Font("Airal", Font.PLAIN, 26));
+				g.setColor(Color.DARK_GRAY);
+				g.drawString("S", 270, 609);
+				g.drawString("D", 374, 609);
+				g.drawString("F", 478, 609);
+				g.drawString("Space Bar", 580, 609);
+				g.drawString("J", 784, 609);
+				g.drawString("K", 889, 609);
+				g.drawString("L", 993, 609);
+				g.setColor(Color.LIGHT_GRAY);
+				g.setFont(new Font("Elephant", Font.BOLD, 30));
+				g.drawString(String.format("%06d", score), 565, 702);
+				g.setColor(Color.white);
+				g.setFont(new Font("SANS_SERIF", Font.BOLD, 62));
+				g.drawString(String.valueOf(combo), 1100, 340);
+				g.drawImage(blueFlareImage, 500, 405, null);
+				g.drawImage(judgeImage, 460, 420, null);
+				g.drawImage(keyPadSImage, 228, 580, null);
+				g.drawImage(keyPadDImage, 332, 580, null);
+				g.drawImage(keyPadFImage, 436, 580, null);
+				g.drawImage(keyPadSpace1Image, 540, 580, null);
+				g.drawImage(keyPadSpace2Image, 640, 580, null);
+				g.drawImage(keyPadJImage, 744, 580, null);
+				g.drawImage(keyPadKImage, 848, 580, null);
+				g.drawImage(keyPadLImage, 952, 580, null);
 			}
-			g.setColor(Color.white);
+		} else if(DynamicBeat.isGameResult) {
+			comboList.add(combo);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//			g.setColor(Color.white);
-			g.setFont(new Font("Airal", Font.BOLD, 30));
-			g.drawString(titleName, 20, 702);
-			g.drawString(difficulty, 1192, 702);
-			g.setFont(new Font("Airal", Font.PLAIN, 26));
-			g.setColor(Color.DARK_GRAY);
-			g.drawString("S", 270, 609);
-			g.drawString("D", 374, 609);
-			g.drawString("F", 478, 609);
-			g.drawString("Space Bar", 580, 609);
-			g.drawString("J", 784, 609);
-			g.drawString("K", 889, 609);
-			g.drawString("L", 993, 609);
+			g.drawImage(resultBackground, 0, 0, null);
 			g.setColor(Color.LIGHT_GRAY);
-			g.setFont(new Font("Elephant", Font.BOLD, 30));
-			g.drawString(String.format("%06d", score), 565, 702);
-			g.setColor(Color.white);
-			g.setFont(new Font("SANS_SERIF", Font.BOLD, 62));
-			g.drawString(String.valueOf(combo), 1100, 340);
-			g.drawImage(blueFlareImage, 500, 405, null);
-			g.drawImage(judgeImage, 460, 420, null);
-			g.drawImage(keyPadSImage, 228, 580, null);
-			g.drawImage(keyPadDImage, 332, 580, null);
-			g.drawImage(keyPadFImage, 436, 580, null);
-			g.drawImage(keyPadSpace1Image, 540, 580, null);
-			g.drawImage(keyPadSpace2Image, 640, 580, null);
-			g.drawImage(keyPadJImage, 744, 580, null);
-			g.drawImage(keyPadKImage, 848, 580, null);
-			g.drawImage(keyPadLImage, 952, 580, null);
-		}
-		if(DynamicBeat.isGameResult) {
-			
+			g.setFont(new Font("SANS_SERIF", Font.BOLD, 48));
+			g.drawString(String.format("%06d", score), 720, 210);
+			g.drawString(String.format("%04d", maxCombo(comboList)), 832, 484);
+			g.drawString(String.format("%04d", perfect), 620, 348);
+			g.drawString(String.format("%04d", great), 620, 412);
+			g.drawString(String.format("%04d", good), 620, 475);
+			g.drawString(String.format("%04d", miss), 620, 539);
 		}
 	}
 	
@@ -484,19 +495,36 @@ public class Game extends Thread {
 		}
 		if(judge.equals("Miss")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
+			comboList.add(combo);
 			combo = 0;
+			miss++;
 		} else if(judge.equals("Good")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgeGood.png")).getImage();
 			score += 5;
-			combo = 0;
+			combo++;
+			good++;
 		} else if(judge.equals("Great")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgeGreat.png")).getImage();
 			score += 10;
 			combo++;
+			great++;
 		} else if(judge.equals("Perfect")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgePerfect.png")).getImage();
 			score += 12;
 			combo++;
+			perfect++;
 		}
+	}
+	
+	public int maxCombo(ArrayList<Integer> combo) {
+		int maxCombo = 0;
+		
+		for(int i=0; i<combo.size(); i++) {
+			if(maxCombo < combo.get(i)) {
+				maxCombo = combo.get(i);
+			}
+		}
+		
+		return maxCombo;
 	}
 }

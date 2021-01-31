@@ -68,10 +68,7 @@ public class Note extends Thread {
 	
 	public void drop() {
 		y += Main.NOTE_SPEED;
-		if(y > 620) {
-			System.out.println("Miss");
-			close();
-		}
+		if(y > 620)	close();
 	}
 	
 	@Override
@@ -91,24 +88,20 @@ public class Note extends Thread {
 		}
 	}
 	
-	public String judge() {
-		if(y >= 610) { // 600
+	public String judge() { //580
+		if(y > 600 && y <= 620) { // 587
 			System.out.println("Good");
 			close();
 			return "Good";
-		} else if(y >= 592) { // 587
-			System.out.println("Great");
-			close();
-			return "Great";
-		} else if(y <= 587 && y >= 571) { // 573
+		} else if(y > 560 && y <= 620) { // 573
 			System.out.println("Perfect");
 			close();
 			return "Perfect";
-		} else if(y >= 556) { // 565
+		} else if(y > 540 && y <= 560) { // 565
 			System.out.println("Great");
 			close();
 			return "Great";
-		} else if(y >= 540) { // 550
+		} else if(y > 520 && y <= 540) { // 550
 			System.out.println("Good");
 			close();
 			return "Good";

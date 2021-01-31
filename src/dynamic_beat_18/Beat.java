@@ -19,7 +19,6 @@ public class Beat {
 	}
 	
 	public Beat(int time, String noteName) {
-		super();
 		this.time = time;
 		this.noteName = noteName;
 	}

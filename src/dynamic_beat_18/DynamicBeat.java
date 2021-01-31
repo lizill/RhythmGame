@@ -29,7 +29,7 @@ public class DynamicBeat extends JFrame {
 	private Image background = new ImageIcon(Main.class.getResource("../images/introBackground.jpg")).getImage();
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
 	
-	private DBConnection connectDatabase = new DBConnection();
+//	private DBConnection connectDatabase = new DBConnection();
 
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.png"));
@@ -68,6 +68,7 @@ public class DynamicBeat extends JFrame {
 
 	private boolean isMainScreen = false;
 	private boolean isGameScreen = false;
+	public static boolean isGameResult = false;
 	
 	ArrayList<Track> trackList = new ArrayList<Track>();
 
@@ -179,15 +180,15 @@ public class DynamicBeat extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if(connectDatabase.isAdmin(idField.getText(), pwField.getText())) {
+//					if(connectDatabase.isAdmin(idField.getText(), pwField.getText())) {
 						Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
 						buttonPressedMusic.start();
 						enterMain();
-					} else {
-						Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
-						buttonPressedMusic.start();
-						System.out.println("로그인 실패");
-					}
+//					} else {
+//						Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
+//						buttonPressedMusic.start();
+//						System.out.println("로그인 실패");
+//					}
 				}
 			}
 		});
@@ -343,6 +344,7 @@ public class DynamicBeat extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
 				buttonPressedMusic.start();
+				isGameResult = false;
 				backMain();
 			}
 		});
@@ -382,6 +384,9 @@ public class DynamicBeat extends JFrame {
 		}
 		if(isGameScreen) {
 			game.screenDraw(g);
+		}
+		if(isGameResult && isGameScreen) {
+			backButton.setVisible(true);
 		}
 		paintComponents(g);
 		try {
@@ -427,7 +432,7 @@ public class DynamicBeat extends JFrame {
 		rightButton.setVisible(false);
 		easyButton.setVisible(false);
 		hardButton.setVisible(false);
-		backButton.setVisible(true);
+//		backButton.setVisible(true);
 		isGameScreen = true;
 		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
 		game.start();

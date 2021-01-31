@@ -5,9 +5,13 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+
+import javazoom.jl.player.Player;
 
 public class Game extends Thread {
 	
@@ -36,8 +40,9 @@ public class Game extends Thread {
 	private String titleName;
 	private String difficulty;
 	private String musicTitle;
-	private Music gameMusic;
+	private GameMusic gameMusic;
 	private int score = 0;
+	private int combo = 0;
 	
 	ArrayList<Note> noteList = new ArrayList<Note>();
 	
@@ -45,11 +50,61 @@ public class Game extends Thread {
 		this.titleName = titleName;
 		this.difficulty = difficulty;
 		this.musicTitle = musicTitle;
-		gameMusic = new Music(this.musicTitle, false);
+		gameMusic = new GameMusic(this.musicTitle, false);
 	}
 	
 	public void screenDraw(Graphics2D g) {
-		if(difficulty.equals("Hard")) {
+		if(difficulty.equals("Easy")) {
+			g.drawImage(noteRouteDImage, 436, 30, null);
+			g.drawImage(noteRouteFImage, 540, 30, null);
+			g.drawImage(noteRouteJImage, 644, 30, null);
+			g.drawImage(noteRouteKImage, 748, 30, null);
+			g.drawImage(noteRouteLineImage, 432, 30, null);
+			g.drawImage(noteRouteLineImage, 536, 30, null);
+			g.drawImage(noteRouteLineImage, 640, 30, null);
+			g.drawImage(noteRouteLineImage, 744, 30, null);
+			g.drawImage(noteRouteLineImage, 848, 30, null);
+			g.drawImage(gameInfoImage, 0, 660, null);
+			g.drawImage(judgementLineImage, 0, 580, null);
+			for(int i=0; i<noteList.size(); i++) {
+				Note note = noteList.get(i);
+				if(note.getY() > 620) {
+					judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
+					combo = 0;
+				}
+				if(!note.isProceeded()) {
+					noteList.remove(i);
+					i--;
+				} else {
+					note.screenDraw(g);
+				}
+			}
+			g.setColor(Color.white);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+//			g.setColor(Color.white);
+			g.setFont(new Font("Airal", Font.BOLD, 30));
+			g.drawString(titleName, 20, 702);
+			g.drawString(difficulty, 1192, 702);
+			g.setFont(new Font("Airal", Font.PLAIN, 26));
+			g.setColor(Color.DARK_GRAY);
+			g.drawString("D", 478, 609);
+			g.drawString("F", 582, 609);
+			g.drawString("J", 686, 609);
+			g.drawString("K", 790, 609);
+			g.setColor(Color.LIGHT_GRAY);
+			g.setFont(new Font("Elephant", Font.BOLD, 30));
+			g.drawString(String.format("%06d", score), 565, 702);
+			g.setColor(Color.white);
+			g.setFont(new Font("SANS_SERIF", Font.BOLD, 62));
+			g.drawString(String.valueOf(combo), 960, 340);
+			g.drawImage(blueFlareImage, 500, 405, null);
+			g.drawImage(judgeImage, 460, 420, null);
+			g.drawImage(keyPadDImage, 436, 580, null);
+			g.drawImage(keyPadFImage, 540, 580, null);
+			g.drawImage(keyPadJImage, 644, 580, null);
+			g.drawImage(keyPadKImage, 748, 580, null);
+		}
+		else if(difficulty.equals("Hard")) {
 			g.drawImage(noteRouteSImage, 228, 30, null);
 			g.drawImage(noteRouteDImage, 332, 30, null);
 			g.drawImage(noteRouteFImage, 436, 30, null);
@@ -82,7 +137,7 @@ public class Game extends Thread {
 			}
 			g.setColor(Color.white);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(Color.white);
+//			g.setColor(Color.white);
 			g.setFont(new Font("Airal", Font.BOLD, 30));
 			g.drawString(titleName, 20, 702);
 			g.drawString(difficulty, 1192, 702);
@@ -98,6 +153,9 @@ public class Game extends Thread {
 			g.setColor(Color.LIGHT_GRAY);
 			g.setFont(new Font("Elephant", Font.BOLD, 30));
 			g.drawString(String.format("%06d", score), 565, 702);
+			g.setColor(Color.white);
+			g.setFont(new Font("SANS_SERIF", Font.BOLD, 62));
+			g.drawString(String.valueOf(combo), 1100, 340);
 			g.drawImage(blueFlareImage, 500, 405, null);
 			g.drawImage(judgeImage, 460, 420, null);
 			g.drawImage(keyPadSImage, 228, 580, null);
@@ -109,52 +167,9 @@ public class Game extends Thread {
 			g.drawImage(keyPadKImage, 848, 580, null);
 			g.drawImage(keyPadLImage, 952, 580, null);
 		}
-		else if(difficulty.equals("Easy")) {
-			g.drawImage(noteRouteDImage, 436, 30, null);
-			g.drawImage(noteRouteFImage, 540, 30, null);
-			g.drawImage(noteRouteJImage, 644, 30, null);
-			g.drawImage(noteRouteKImage, 748, 30, null);
-			g.drawImage(noteRouteLineImage, 432, 30, null);
-			g.drawImage(noteRouteLineImage, 536, 30, null);
-			g.drawImage(noteRouteLineImage, 640, 30, null);
-			g.drawImage(noteRouteLineImage, 744, 30, null);
-			g.drawImage(gameInfoImage, 0, 660, null);
-			g.drawImage(judgementLineImage, 0, 580, null);
-			for(int i=0; i<noteList.size(); i++) {
-				Note note = noteList.get(i);
-				if(note.getY() > 620) {
-					judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
-				}
-				if(!note.isProceeded()) {
-					noteList.remove(i);
-					i--;
-				} else {
-					note.screenDraw(g);
-				}
-			}
-			g.setColor(Color.white);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(Color.white);
-			g.setFont(new Font("Airal", Font.BOLD, 30));
-			g.drawString(titleName, 20, 702);
-			g.drawString(difficulty, 1192, 702);
-			g.setFont(new Font("Airal", Font.PLAIN, 26));
-			g.setColor(Color.DARK_GRAY);
-			g.drawString("D", 478, 609);
-			g.drawString("F", 582, 609);
-			g.drawString("J", 686, 609);
-			g.drawString("K", 790, 609);
-			g.setColor(Color.LIGHT_GRAY);
-			g.setFont(new Font("Elephant", Font.BOLD, 30));
-			g.drawString(String.format("%06d", score), 565, 702);
-			g.drawImage(blueFlareImage, 500, 405, null);
-			g.drawImage(judgeImage, 460, 420, null);
-			g.drawImage(keyPadDImage, 436, 580, null);
-			g.drawImage(keyPadFImage, 540, 580, null);
-			g.drawImage(keyPadJImage, 644, 580, null);
-			g.drawImage(keyPadKImage, 748, 580, null);
+		if(DynamicBeat.isGameResult) {
+			
 		}
-		
 	}
 	
 	public void pressS() {
@@ -250,6 +265,7 @@ public class Game extends Thread {
 	
 	public void dropNotes(String titleName) {
 		Beat[] beats = null;
+		
 		if(titleName.equals("Neo-Aspect") && difficulty.equals("Easy")) {
 			int startTime = 1000 - Main.REACH_TIME * 1000;
 			beats = new Beat[] {
@@ -446,7 +462,7 @@ public class Game extends Thread {
 				try {
 					Thread.sleep(5);
 				} catch (Exception e) {
-					e.printStackTrace();
+					return;
 				}
 			}
 		}
@@ -468,15 +484,19 @@ public class Game extends Thread {
 		}
 		if(judge.equals("Miss")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgeMiss.png")).getImage();
+			combo = 0;
 		} else if(judge.equals("Good")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgeGood.png")).getImage();
 			score += 5;
+			combo = 0;
 		} else if(judge.equals("Great")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgeGreat.png")).getImage();
 			score += 10;
+			combo++;
 		} else if(judge.equals("Perfect")) {
 			judgeImage = new ImageIcon(Main.class.getResource("../images/judgePerfect.png")).getImage();
 			score += 12;
+			combo++;
 		}
 	}
 }

@@ -57,4 +57,28 @@ public class DBConnection {
 		}
 		return score;
 	}
+	
+	public boolean isSameMemberID(String signUpID) {
+		try {
+			String SQL = "SELECT * FROM user_info WHERE userID = '" + signUpID + "'";
+			rs = st.executeQuery(SQL);
+			
+			return rs.next();
+		} catch(Exception e) {
+			System.out.println("Database Connect error: " + e.getMessage());
+		}
+		return false;
+	}
+	
+	public boolean setUserInfo(String userID, String userPW, String userName, String userEmail) {
+		try {
+			String SQL = "INSERT INTO user_info (userID, userPW, userName, userEmail) VALUES ('" +  userID + "', '" + userPW
+						+ "', '" + userName + "', '" + userEmail + "')";
+			if(st.executeUpdate(SQL) == 1) return true;
+		} catch(Exception e) {
+			System.out.println("Database Connect error: " + e.getMessage());
+		}
+		
+		return false;
+	}
 }

@@ -42,6 +42,7 @@ public class Game extends Thread {
 	private String difficulty;
 	private String musicTitle;
 	private Music gameMusic;
+	private Music resultMusic = new Music("resultMusic.mp3", true);
 	private int score, combo, miss, good, great, perfect;
 	
 	ArrayList<Note> noteList = new ArrayList<Note>();
@@ -57,6 +58,7 @@ public class Game extends Thread {
 				super.run();
 
 				DynamicBeat.isGameResult = true;
+				resultMusic.start();
 			}
 		};
 	}
@@ -177,10 +179,10 @@ public class Game extends Thread {
 			}
 		} else if(DynamicBeat.isGameResult) {
 			comboList.add(combo);
-			if(score > DynamicBeat.userScore) {
+			if(score > DynamicBeat.userScore && !DynamicBeat.userID.equals("GEST")) {
 				DynamicBeat.userScore = score;
 				DynamicBeat.DB.setUserScore(DynamicBeat.userID, DynamicBeat.userScore);
-			}
+			} else if (score > DynamicBeat.userScore && DynamicBeat.userID.equals("GEST")) DynamicBeat.userScore = score;
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			g.drawImage(resultBackground, 0, 0, null);
 			g.setColor(Color.LIGHT_GRAY);
@@ -282,6 +284,7 @@ public class Game extends Thread {
 	
 	public void close() {
 		gameMusic.close();
+		resultMusic.close();
 		this.interrupt();
 	}
 	

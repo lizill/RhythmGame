@@ -57,6 +57,8 @@ public class DynamicBeat extends JFrame {
 	private JPasswordField pwField = new JPasswordField(10);
 	
 	private JButton exitButton = new JButton(exitButtonBasicImage);
+	private JButton gestLoginButton = new JButton("Gest Login");
+	private JButton signUpButton = new JButton("Sign Up");
 	private JButton startButton = new JButton(startButtonBasicImage);
 	private JButton leftButton = new JButton(leftButtonBasicImage);
 	private JButton rightButton = new JButton(rightButtonBasicImage);
@@ -80,7 +82,7 @@ public class DynamicBeat extends JFrame {
 	
 	public static Game game;
 	public static DBConnection DB = new DBConnection();
-	public static String userID = "";
+	public static String userID = "GEST";
 	public static int userScore = 0;
 
 	public DynamicBeat() {
@@ -135,6 +137,93 @@ public class DynamicBeat extends JFrame {
 			}
 		});
 		add(exitButton);
+		
+		idField.setFont(new Font("Airal", Font.BOLD, 25));
+		idField.setBounds(110, 30, 250, 45);
+		idField.setMargin(new Insets(0, 10, 0, 10));
+		loginPanel.add(idField);
+		
+		idLabel.setFont(new Font("DIALOG", Font.BOLD, 30));
+		idLabel.setBounds(40, 30, 60, 45);
+		loginPanel.add(idLabel);
+		
+		pwField.setFont(new Font("Airal", Font.BOLD, 25));
+		pwField.setBounds(110, 80, 250, 45);
+		pwField.setMargin(new Insets(0, 10, 0, 10));
+		pwField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
+					buttonPressedMusic.start();
+					loginCheck();
+				}
+			}
+		});
+		loginPanel.add(pwField);
+		
+		pwLabel.setFont(new Font("DIALOG", Font.BOLD, 30));
+		pwLabel.setBounds(40, 80, 60, 45);
+		loginPanel.add(pwLabel);
+		
+		gestLoginButton.setBounds(40, 135, 155, 40);
+		gestLoginButton.setFont(new Font("Airal", Font.BOLD, 18));
+		gestLoginButton.setFocusable(false);
+		gestLoginButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				gestLoginButton.setIcon(gestLoginButtonEnteredImage);
+				gestLoginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3", false);
+				buttonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+//				gestLoginButton.setIcon(gestLoginButtonBasicImage);
+				gestLoginButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
+				buttonPressedMusic.start();
+				enterMain();
+			}
+		});
+		loginPanel.add(gestLoginButton);
+		
+		signUpButton.setBounds(205, 135, 155, 40);
+		signUpButton.setFont(new Font("Airal", Font.BOLD, 18));
+		signUpButton.setFocusable(false);
+		signUpButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				gestLoginButton.setIcon(gestLoginButtonEnteredImage);
+				gestLoginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				Music buttonEnteredMusic = new Music("buttonEnteredMusic.mp3", false);
+				buttonEnteredMusic.start();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+//				gestLoginButton.setIcon(gestLoginButtonBasicImage);
+				gestLoginButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
+				buttonPressedMusic.start();
+				new SignUpPage();
+			}
+		});
+		loginPanel.add(signUpButton);
+		
+		loginPanel.setBounds(440, 260, 400, 200);
+		loginPanel.setBackground(new Color(255, 255, 255, 200));
+		loginPanel.setLayout(null);
+		add(loginPanel);
 
 		startButton.setBounds(440, 480, 400, 100);
 		startButton.setBorderPainted(false);
@@ -163,37 +252,6 @@ public class DynamicBeat extends JFrame {
 			}
 		});
 		add(startButton);
-		
-		idField.setFont(new Font("Airal", Font.BOLD, 25));
-		idField.setBounds(110, 30, 250, 45);
-		idField.setMargin(new Insets(0, 10, 0, 10));
-		idLabel.setFont(new Font("DIALOG", Font.BOLD, 30));
-		idLabel.setBounds(40, 30, 60, 45);
-		
-		pwField.setFont(new Font("Airal", Font.BOLD, 25));
-		pwField.setBounds(110, 80, 250, 45);
-		pwField.setMargin(new Insets(0, 10, 0, 10));
-		pwField.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
-					buttonPressedMusic.start();
-					loginCheck();
-				}
-			}
-		});
-		pwLabel.setFont(new Font("DIALOG", Font.BOLD, 30));
-		pwLabel.setBounds(40, 80, 60, 45);
-		
-		loginPanel.setBounds(440, 260, 400, 200);
-		loginPanel.setBackground(new Color(255, 255, 255, 200));
-		loginPanel.setLayout(null);
-		loginPanel.add(idLabel);
-		loginPanel.add(idField);
-		loginPanel.add(pwLabel);
-		loginPanel.add(pwField);
-		add(loginPanel);
 
 		leftButton.setVisible(false);
 		leftButton.setBounds(140, 310, 60, 60);
@@ -361,12 +419,22 @@ public class DynamicBeat extends JFrame {
 	}
 	
 	public void loginCheck() {
-		if(DB.isUserLogin(idField.getText(), pwField.getText())) {
+		if(idField.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "아이디를 입력해 주세요.", "로그인 실패", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else if(pwField.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "비밀번호를 입력해 주세요.", "로그인 실패", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else if(DB.isUserLogin(idField.getText(), pwField.getText())) {
 			userID = idField.getText();
 			userScore = DB.getUserScore(userID);
 			enterMain();
-		} else {
-			JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 확인해 주세요.", "로그인 실패", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else if(DB.isSameMemberID(idField.getText())) {
+			JOptionPane.showMessageDialog(null, "잘못된 비밀번호 입니다.", "로그인 실패", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "등록되지 않은 사용자 입니다.", "로그인 실패", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

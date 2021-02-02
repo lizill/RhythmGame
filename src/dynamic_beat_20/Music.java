@@ -1,4 +1,4 @@
-package dynamic_beat_19;
+package dynamic_beat_20;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 
 import javazoom.jl.player.Player;
 
-public class GameMusic extends Thread {
+public class Music extends Thread {
 	
 	private Player player;
 	private boolean isLoop;
@@ -14,7 +14,7 @@ public class GameMusic extends Thread {
 	private FileInputStream fis;
 	private BufferedInputStream bis;
 	
-	public GameMusic(String name, boolean isLoop) {
+	public Music(String name, boolean isLoop) {
 		try {
 			this.isLoop = isLoop;
 			file = new File(Main.class.getResource("../music/" + name).toURI());
@@ -50,7 +50,5 @@ public class GameMusic extends Thread {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
-		DynamicBeat.isGameResult = true;
 	}
 }

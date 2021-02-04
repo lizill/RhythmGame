@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: lib/jl1.0.1.jar lib/mysql-connector-java-8.0.23.jar
-Main-Class: dynamic_beat_21.Main

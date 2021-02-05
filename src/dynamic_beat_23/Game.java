@@ -279,6 +279,7 @@ public class Game extends Thread {
 	public void close() {
 		gameMusic.close();
 		resultMusic.close();
+		DynamicBeat.isGameResult = false;
 		this.interrupt();
 	}
 	

@@ -401,7 +401,6 @@ public class DynamicBeat extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
 				buttonPressedMusic.start();
-				isGameResult = false;
 				backMain();
 			}
 		});
@@ -464,12 +463,14 @@ public class DynamicBeat extends JFrame {
 			g.setFont(new Font("Airal", Font.BOLD, 30));
 			g.drawString(userInfo, 30, 690);
 			
-			g.drawString("User Rank", 30, 100);
-			g.setFont(new Font("Airal", Font.BOLD, 24));
-			ArrayList<UserInfo> rankInfo = DB.getUsersInfo();
-			for(int i=0; i<rankInfo.size(); i++) {
-				g.drawString((i+1) + ". " + rankInfo.get(i).userID, 30, 140+i*30);
-				g.drawString(String.valueOf(rankInfo.get(i).score), 180, 140+i*30);
+			if(!userID.equals("GEST")) {
+				g.drawString("User Rank", 30, 100);
+				g.setFont(new Font("Airal", Font.BOLD, 24));
+				ArrayList<UserInfo> rankInfo = DB.getUsersInfo();
+				for(int i=0; i<rankInfo.size(); i++) {
+					g.drawString((i+1) + ". " + rankInfo.get(i).userID, 30, 140+i*30);
+					g.drawString(String.valueOf(rankInfo.get(i).score), 180, 140+i*30);
+				}
 			}
 		}
 		if(isGameScreen) {

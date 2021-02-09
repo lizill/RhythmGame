@@ -401,16 +401,7 @@ public class DynamicBeat extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false);
 				buttonPressedMusic.start();
-				if(isGameResult) {
-					backMain();
-				} else {
-					try {
-						game.sleep(1000);
-						
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				}
+				backMain();
 			}
 		});
 		add(backButton);
@@ -484,9 +475,9 @@ public class DynamicBeat extends JFrame {
 		}
 		if(isGameScreen) {
 			game.screenDraw(g);
-		}
-		if(isGameResult && isGameScreen) {
-			backButton.setVisible(true);
+			if(isGameResult) {
+				backButton.setVisible(true);
+			}
 		}
 		paintComponents(g);
 		try {
@@ -525,14 +516,13 @@ public class DynamicBeat extends JFrame {
 		selectTrack(nowSelected);
 	}
 	
-	public void gameStart(int nowSelected, String difficulty) {
+	synchronized public void gameStart(int nowSelected, String difficulty) {
 		if(selectedMusic != null) selectedMusic.close();
 		isMainScreen = false;
 		leftButton.setVisible(false);
 		rightButton.setVisible(false);
 		easyButton.setVisible(false);
 		hardButton.setVisible(false);
-//		backButton.setVisible(true);
 		isGameScreen = true;
 		game = new Game(trackList.get(nowSelected).getTitleName(), difficulty, trackList.get(nowSelected).getGameMusic());
 		game.start();

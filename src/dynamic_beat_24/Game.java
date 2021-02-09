@@ -273,7 +273,7 @@ public class Game extends Thread {
 	
 	@Override
 	public void run() {
-		dropNotes(this.titleName);
+			dropNotes(this.titleName);
 	}
 	
 	public void close() {
@@ -623,12 +623,9 @@ public class Game extends Thread {
 //					new Beat(startTime + gap*224, "J"),
 //					new Beat(startTime + gap*224, "J"),
 //					new Beat(startTime + gap*224, "J"),
-					
 			};
 		}
 		else if(titleName.equals("Homura") && difficulty.equals("Hard")) {
-			
-			
 			int startTime = 2000;
 			int gap = 395;
 			beats = new Beat[] {
@@ -664,11 +661,13 @@ public class Game extends Thread {
 		while(i < beats.length && !isInterrupted()) {
 			boolean dropped = false;
 			if(beats[i].getTime() <= gameMusic.getTime()) {
-				Note note = new Note(beats[i].getNoteName(), difficulty);
-				note.start();
-				noteList.add(note);
-				i++;
-				dropped = true;
+				synchronized(this) {
+					Note note = new Note(beats[i].getNoteName(), difficulty);
+					note.start();
+					noteList.add(note);
+					i++;
+					dropped = true;
+				}
 			}
 			if(!dropped) {
 				try {

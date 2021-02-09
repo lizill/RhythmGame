@@ -73,32 +73,32 @@ public class Note extends Thread {
 	
 	@Override
 	public void run() {
-		try {
-			while(true) {
-				drop();
-				if(proceeded) {
-					Thread.sleep(Main.SLEEP_TIME);
-				} else {
-					interrupt();
-					break;
+			try {
+				while(true) {
+					drop();
+					if(proceeded) {
+						Thread.sleep(Main.SLEEP_TIME);
+					} else {
+						interrupt();
+						break;
+					}
 				}
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
 			}
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
 	
 	public String judge() { //580
 		if(y > 600 && y <= 620) { // 587
 			close();
 			return "Good";
-		} else if(y > 560 && y <= 600) { // 573
+		} else if(y > 540 && y <= 600) { // 565
 			close();
 			return "Perfect";
-		} else if(y > 540 && y <= 560) { // 565
+		} else if(y > 500 && y <= 540) { // 550
 			close();
 			return "Great";
-		} else if(y > 520 && y <= 540) { // 550
+		} else if(y > 460 && y <= 500) { // 550
 			close();
 			return "Good";
 		}

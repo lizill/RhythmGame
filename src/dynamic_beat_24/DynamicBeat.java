@@ -516,7 +516,7 @@ public class DynamicBeat extends JFrame {
 		selectTrack(nowSelected);
 	}
 	
-	synchronized public void gameStart(int nowSelected, String difficulty) {
+	public synchronized void gameStart(int nowSelected, String difficulty) {
 		if(selectedMusic != null) selectedMusic.close();
 		isMainScreen = false;
 		leftButton.setVisible(false);

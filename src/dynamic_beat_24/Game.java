@@ -37,6 +37,7 @@ public class Game extends Thread {
 	private Image keyPadKImage = new ImageIcon("images/keyPadBasic.png").getImage();
 	private Image keyPadLImage = new ImageIcon("images/keyPadBasic.png").getImage();
 	private Image resultBackground = new ImageIcon("images/resultBackground.png").getImage();
+	private Image fullComboImage = new ImageIcon("images/fullCombo.png").getImage();
 	
 	private String titleName;
 	private String difficulty;
@@ -182,6 +183,7 @@ public class Game extends Thread {
 				DynamicBeat.DB.setUserScore(DynamicBeat.userID, DynamicBeat.userScore);
 			} else if (score > DynamicBeat.userScore && DynamicBeat.userID.equals("GEST"))
 				DynamicBeat.userScore = score;
+			
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			g.drawImage(resultBackground, 0, 0, null);
 			g.setColor(Color.LIGHT_GRAY);
@@ -192,6 +194,10 @@ public class Game extends Thread {
 			g.drawString(String.format("%04d", great), 620, 412);
 			g.drawString(String.format("%04d", good), 620, 475);
 			g.drawString(String.format("%04d", miss), 620, 539);
+			
+			if(miss == 0) {
+				g.drawImage(fullComboImage, 708, 478, null);
+			}
 		}
 	}
 	
@@ -689,7 +695,7 @@ public class Game extends Thread {
 		}
 	}
 	
-	public void judgeEvent(String judge) {
+	public synchronized void judgeEvent(String judge) {
 		if(!judge.equals("None")) {
 			blueFlareImage = new ImageIcon("images/blueFlare.png").getImage();
 		}

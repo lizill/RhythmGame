@@ -1,4 +1,4 @@
-package dynamic_beat_25;
+package dynamic_beat_24;
 
 import java.awt.Cursor;
 import java.awt.Font;

@@ -1,4 +1,4 @@
-package dynamic_beat_25;
+package dynamic_beat_24;
 
 public class Track {
 

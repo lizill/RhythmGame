@@ -1,4 +1,4 @@
-package dynamic_beat_24;
+package dynamic_beat_25;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -77,7 +77,7 @@ public class Game extends Thread {
 				g.drawImage(noteRouteLineImage, 744, 30, null);
 				g.drawImage(noteRouteLineImage, 848, 30, null);
 				g.drawImage(gameInfoImage, 0, 660, null);
-				g.drawImage(judgementLineImage, 0, 580, null);
+//				g.drawImage(judgementLineImage, 0, 580, null);
 				for(int i=0; i<noteList.size(); i++) {
 					Note note = noteList.get(i);
 					if(note.getY() > 620) {
@@ -97,10 +97,10 @@ public class Game extends Thread {
 				g.drawString(difficulty, 1192, 702);
 				g.setFont(new Font("Airal", Font.PLAIN, 26));
 				g.setColor(Color.DARK_GRAY);
-				g.drawString("D", 478, 609);
-				g.drawString("F", 582, 609);
-				g.drawString("J", 686, 609);
-				g.drawString("K", 790, 609);
+				g.drawString("D", 478, 649);
+				g.drawString("F", 582, 649);
+				g.drawString("J", 686, 649);
+				g.drawString("K", 790, 649);
 				g.setColor(Color.LIGHT_GRAY);
 				g.setFont(new Font("Elephant", Font.BOLD, 30));
 				g.drawString(String.format("%06d", score), 565, 702);
@@ -109,10 +109,10 @@ public class Game extends Thread {
 				g.drawString(String.valueOf(combo), 960, 340);
 				g.drawImage(blueFlareImage, 500, 405, null);
 				g.drawImage(judgeImage, 460, 420, null);
-				g.drawImage(keyPadDImage, 436, 580, null);
-				g.drawImage(keyPadFImage, 540, 580, null);
-				g.drawImage(keyPadJImage, 644, 580, null);
-				g.drawImage(keyPadKImage, 748, 580, null);
+				g.drawImage(keyPadDImage, 436, 620, null);
+				g.drawImage(keyPadFImage, 540, 620, null);
+				g.drawImage(keyPadJImage, 644, 620, null);
+				g.drawImage(keyPadKImage, 748, 620, null);
 			}
 			else if(difficulty.equals("Hard")) {
 				g.drawImage(noteRouteSImage, 228, 30, null);
@@ -132,7 +132,7 @@ public class Game extends Thread {
 				g.drawImage(noteRouteLineImage, 948, 30, null);
 				g.drawImage(noteRouteLineImage, 1052, 30, null);
 				g.drawImage(gameInfoImage, 0, 660, null);
-				g.drawImage(judgementLineImage, 0, 580, null);
+//				g.drawImage(judgementLineImage, 0, 580, null);
 				for(int i=0; i<noteList.size(); i++) {
 					Note note = noteList.get(i);
 					if(note.getY() > 620) {
@@ -152,13 +152,13 @@ public class Game extends Thread {
 				g.drawString(difficulty, 1192, 702);
 				g.setFont(new Font("Airal", Font.PLAIN, 26));
 				g.setColor(Color.DARK_GRAY);
-				g.drawString("S", 270, 609);
-				g.drawString("D", 374, 609);
-				g.drawString("F", 478, 609);
-				g.drawString("Space Bar", 580, 609);
-				g.drawString("J", 784, 609);
-				g.drawString("K", 889, 609);
-				g.drawString("L", 993, 609);
+				g.drawString("S", 270, 649);
+				g.drawString("D", 374, 649);
+				g.drawString("F", 478, 649);
+				g.drawString("Space Bar", 580, 649);
+				g.drawString("J", 784, 649);
+				g.drawString("K", 889, 649);
+				g.drawString("L", 993, 649);
 				g.setColor(Color.LIGHT_GRAY);
 				g.setFont(new Font("Elephant", Font.BOLD, 30));
 				g.drawString(String.format("%06d", score), 565, 702);
@@ -166,15 +166,15 @@ public class Game extends Thread {
 				g.setFont(new Font("SANS_SERIF", Font.BOLD, 62));
 				g.drawString(String.valueOf(combo), 1100, 340);
 				g.drawImage(blueFlareImage, 500, 405, null);
-				g.drawImage(judgeImage, 460, 420, null);
-				g.drawImage(keyPadSImage, 228, 580, null);
-				g.drawImage(keyPadDImage, 332, 580, null);
-				g.drawImage(keyPadFImage, 436, 580, null);
-				g.drawImage(keyPadSpace1Image, 540, 580, null);
-				g.drawImage(keyPadSpace2Image, 640, 580, null);
-				g.drawImage(keyPadJImage, 744, 580, null);
-				g.drawImage(keyPadKImage, 848, 580, null);
-				g.drawImage(keyPadLImage, 952, 580, null);
+//				g.drawImage(judgeImage, 460, 420, null);
+				g.drawImage(keyPadSImage, 228, 620, null);
+				g.drawImage(keyPadDImage, 332, 620, null);
+				g.drawImage(keyPadFImage, 436, 620, null);
+				g.drawImage(keyPadSpace1Image, 540, 620, null);
+				g.drawImage(keyPadSpace2Image, 640, 620, null);
+				g.drawImage(keyPadJImage, 744, 620, null);
+				g.drawImage(keyPadKImage, 848, 620, null);
+				g.drawImage(keyPadLImage, 952, 620, null);
 			}
 		} else if(DynamicBeat.isGameResult) {
 			comboList.add(combo);
@@ -259,7 +259,6 @@ public class Game extends Thread {
 		judge("K");
 		noteRouteKImage = new ImageIcon("images/noteRoutePressed.png").getImage();
 		keyPadKImage = new ImageIcon("images/keyPadPressed.png").getImage();
-//		new Music("tomMidle.mp3", false).start();
 	}
 	public void releaseK() {
 		noteRouteKImage = new ImageIcon("images/noteRoute.png").getImage();
@@ -270,7 +269,6 @@ public class Game extends Thread {
 		judge("L");
 		noteRouteLImage = new ImageIcon("images/noteRoutePressed.png").getImage();
 		keyPadLImage = new ImageIcon("images/keyPadPressed.png").getImage();
-//		new Music("ride.mp3", false).start();
 	}
 	public void releaseL() {
 		noteRouteLImage = new ImageIcon("images/noteRoute.png").getImage();
@@ -279,7 +277,7 @@ public class Game extends Thread {
 	
 	@Override
 	public void run() {
-			dropNotes(this.titleName);
+		dropNotes(this.titleName);
 	}
 	
 	public void close() {
@@ -293,7 +291,7 @@ public class Game extends Thread {
 		Beat[] beats = null;
 		
 		if(titleName.equals("Homura") && difficulty.equals("Easy")) {
-			int startTime = 2000;
+			int startTime = 2060;
 			int gap = 395;
 			beats = new Beat[] {
 //					------------------------------------ 1    D F J K

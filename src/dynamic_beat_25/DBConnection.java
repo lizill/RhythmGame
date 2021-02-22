@@ -1,4 +1,4 @@
-package dynamic_beat_24;
+package dynamic_beat_25;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ public class DBConnection {
 	public DBConnection() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://211.59.15.18:3306/login", "lizill", "kc9452");
+			con = DriverManager.getConnection("jdbc:mysql://122.202.45.140:3306/login", "lizill", "kc9452");
 			st = con.createStatement();
 		}
 		catch(Exception e) {

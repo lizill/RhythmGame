@@ -2,8 +2,6 @@
 
 > **참고영상**: [동빈나 자바 리듬게임 강좌](https://youtu.be/xs92kqU2YWg?list=PLRx0vPvlEmdDySO3wDqMYGKMVH4Qa4QhR)
 
-![게임 플레이 GIF](./readmeImages/rhythmGameBackground.gif)
-
 자바를 활용해 만든 리듬게임!
 
 # 로그인 화면

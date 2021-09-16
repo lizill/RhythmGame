@@ -6,4 +6,3 @@ Make RhythmGame with Java
 > 
 
 # Main
-
